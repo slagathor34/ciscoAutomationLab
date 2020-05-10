@@ -3,12 +3,35 @@
   hosts: routers
   connection: network_cli
 
+  vars:
+    backup_root: backups
+
   tasks:
-    - name: "TASK 1: Get running BGP configuration"
+    - name: "TASK 1: Get running configuration"
       ios_command:
-        commands: "show running-config | section bgp"
+        commands: "show running-config"
       register: cli_result
 
     - name: "TASK 2: Show running config"
       debug:
         msg: "{{ cli_result }}"
+
+    - name: "TASK 3: Ensure backup folder is created"
+      file:
+        path: "{{ backup_root }}"
+        state: directory
+      run_once: yes
+
+    - name: "TASK 4: Ensure device folder is created"
+      file:
+        path: "{{ backup_root }}/{{ inventory_hostname }}"
+        state: directory
+
+    - name: "TASK 5: Get timestamp"
+      command: date +%Y%m%d
+      register: timestamp
+
+    - name: "TASK 6: Copy config to directory"
+      copy:
+        content: "{{ cli_result.stdout[0] }}"
+        dest: "{{ backup_root }}/{{ inventory_hostname }}/running-config_{{ timestamp.stdout }}"
