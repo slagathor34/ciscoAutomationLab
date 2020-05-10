@@ -1,0 +1,7 @@
+---
+ansible_network_os: "ios"
+ansible_user: "ansible"
+ansible_password: "ansible"
+ansible_become_password: "ansible"
+ansible_become: yes
+ansible_python_interpreter: /usr/bin/python3

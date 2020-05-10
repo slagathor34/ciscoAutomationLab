@@ -1,0 +1,14 @@
+---
+- name: "PLAY 1: Capture ios config and store"
+  hosts: routers
+  connection: network_cli
+
+  tasks:
+    - name: "TASK 1: Get running BGP configuration"
+      ios_command:
+        commands: "show running-config | section bgp"
+      register: cli_result
+
+    - name: "TASK 2: Show running config"
+      debug:
+        msg: "{{ cli_result }}"
