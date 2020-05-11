@@ -4,7 +4,7 @@
   connection: network_cli
 
   vars:
-    backup_root: backups
+    backup_root: /home/awx/backups
 
   tasks:
     - name: "TASK 1: Get running configuration"
